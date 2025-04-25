@@ -1,0 +1,48 @@
+:root {
+    --reader-font-size: 1.1rem;
+    --page-padding: 2.5rem;
+    --parchment: url("./assets/images/parchment.jpg");
+    --font-display: "IM Fell English", serif;
+}
+
+/* Reset básico */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body, .page {
+    width: 100vw; height: 100vh;
+    overflow: hidden;
+    font-family: var(--font-display);
+    font-size: var(--reader-font-size);
+    line-height: 1.55;
+    background: var(--parchment) center/cover repeat;
+    display: flex; flex-direction: column; justify-content: center;
+    text-align: center;
+    color: #2b1a02;
+}
+
+.page { padding: var(--page-padding); }
+
+#nextBtn, #prevBtn {
+    position: absolute; bottom: 2rem;
+    background: none; border: none; cursor: pointer;
+    animation: bounce 2s infinite;
+}
+
+#nextBtn { right: 2rem; }
+#prevBtn { left: 2rem; }
+
+#fontDecBtn, #fontIncBtn {
+    position: absolute; bottom: 2.5rem;
+    background: none; border: none; cursor: pointer;
+    
+}
+
+#fontDecBtn { left: calc(50% - 2.5rem); }
+#fontIncBtn { right: calc(50% + 0.5rem); }
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateX(6px); }
+}
+
+/* Botão de fonte será adicionado depois */
