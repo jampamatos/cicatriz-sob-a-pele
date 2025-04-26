@@ -1,50 +1,67 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portão de Baldur - A Cicatriz Sob a Pele</title>
-    <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=EB+Garamond&family=Caveat:wght@700&display=swap" rel="stylesheet"/>
-    <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portão de Baldur - A Cicatriz Sob a Pele</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=EB+Garamond&family=Caveat:wght@700&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
-    <div class="reader">
-        <!-- Capa -->
-        <section id="cover" class="page">
-            <h1>Portão de Baldur - A Cicatriz Sob a Pele</h1>
-            <p>Uma aventura no mundo de Forgotten Realms</p>
-        </section>
+  <div class="reader">
+    <!-- Capa -->
+    <section id="cover" class="page">
+      <div class="page-content">
+        <h1>Portão de Baldur - A Cicatriz Sob a Pele</h1>
+        <p>Uma aventura no mundo de Forgotten Realms</p>
+      </div>
+      <div class="page-controls">
+        <button id="prevBtn" aria-label="Voltar página"><p>←</p></button>
+        <button id="fontDecBtn" aria-label="Diminuir fonte"><p>A-</p></button>
+        <button id="fontIncBtn" aria-label="Aumentar fonte"><p>A+</p></button>
+        <button id="nextBtn" aria-label="Avançar página"><p>→</p></button>
+      </div>
+    </section>
 
-        <!-- Container onde o JS vai injetar páginas -->
-        <div id="book"></div>
-        
-        <!-- Botões de navegação gerais -->
-        <button id="prevBtn" aria-label="Voltar página">
-            <p>&larr;</p>
-        </button>
+    <!-- Páginas de texto (injetadas pelo JS) -->
+    <section class="page">
+      <div class="page-content" id="book">
+        <!-- O main.js injetará aqui o HTML dos capítulos -->
+      </div>
+      <div class="page-controls">
+        <button id="prevBtn" aria-label="Voltar página"><p>←</p></button>
+        <button id="fontDecBtn" aria-label="Diminuir fonte"><p>A-</p></button>
+        <button id="fontIncBtn" aria-label="Aumentar fonte"><p>A+</p></button>
+        <button id="nextBtn" aria-label="Avançar página"><p>→</p></button>
+      </div>
+    </section>
+  </div>
 
-        <button id="fontDecBtn" aria-label="Diminuir fonte">
-            <p>A-</p>
-        </button>
+  <!-- Contracapa (injetada pelo JS no final), já com wrappers iguais -->
+  <template id="back-cover">
+    <section class="page back">
+      <div class="page-content">
+        <h2>Uma aventura Dungeons and Dragons</h2>
+        <p>
+          Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+          Vitae autem fuga id officiis fugiat totam modi asperiores
+          consequuntur odio, qui hic repellat doloribus veritatis
+          enim aperiam quam reprehenderit blanditiis ab.
+        </p>
+      </div>
+      <div class="page-controls">
+        <button id="prevBtn" aria-label="Voltar página"><p>←</p></button>
+        <button id="fontDecBtn" aria-label="Diminuir fonte"><p>A-</p></button>
+        <button id="fontIncBtn" aria-label="Aumentar fonte"><p>A+</p></button>
+        <button id="nextBtn" aria-label="Avançar página"><p>→</p></button>
+      </div>
+    </section>
+  </template>
 
-        <button id="fontIncBtn" aria-label="Aumentar fonte">
-            <p>A+</p>
-        </button>
-
-        <button id="nextBtn" aria-label="Avançar página">
-            <p>&rarr;</p>
-        </button>
-    </div>
-    
-    <!-- Contracapa (injetada pelo JS no final)-->
-     <template id="back-cover">
-        <section class="page back">
-            <h2>Uma aventura Dungeons and Dragons</h2>
-            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Vitae autem fuga id officiis fugiat totam modi asperiores consequuntur odio, qui hic repellat doloribus veritatis enim aperiam quam reprehenderit blanditiis ab.</p>
-        </section>
-     </template>
-
-    <script src="main.js"></script>
+  <script src="main.js"></script>
 </body>
 </html>

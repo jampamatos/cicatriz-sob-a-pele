@@ -10,12 +10,28 @@ const prevBtn = document.getElementById('prevBtn');
 const fontDecBtn = document.getElementById('fontDecBtn');
 const fontIncBtn = document.getElementById('fontIncBtn');
 
+document.body.addEventListener('click', evt => {
+    const btn = evt.target.closest('button');
+    if (!btn) return;
+
+    if (btn.id === 'nextBtn') {
+        nextPage();
+    }
+    if (btn.id === 'prevBtn') {
+        prevPage();
+    }
+    if (btn.id === 'fontDecBtn') {
+        changeFont(-0.1);
+    }
+    if (btn.id === 'fontIncBtn') {
+        changeFont(+0.1);
+    }
+})
+
 // Fonte preferida
 initFontControls();
 
 /* ----- Navegação ----- */
-nextBtn.addEventListener('click', nextPage);
-prevBtn.addEventListener('click', prevPage);
 document.addEventListener('keydown', evt => {
     if (evt.key === 'ArrowRight') nextPage();
     if (evt.key === 'ArrowLeft') prevPage();
