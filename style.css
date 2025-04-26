@@ -2,47 +2,179 @@
     --reader-font-size: 1.1rem;
     --page-padding: 2.5rem;
     --parchment: url("./assets/images/parchment.jpg");
-    --font-display: "IM Fell English", serif;
+    --font-title: "IM Fell English SC", serif;
+    --font-text: "EB Garamond", serif;
+    --bg-surround: #333;
+    --page-width: 60vw;
+    --page-height: calc(100vh - 1.5rem);
+    --page-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
 }
 
-/* Reset básico */
-* { box-sizing: border-box; margin: 0; padding: 0; }
 
-body, .page {
-    width: 100vw; height: 100vh;
+
+body {
+    margin: 0; padding: 0;
+    background: var(--bg-surround);
+    display: flex; align-items: flex-start; justify-content: center;
+    height: 100vh; overflow: hidden;
+    padding-top: 1rem;
+}
+
+.page {
+    width: var(--page-width);
+    height: var(--page-height);
+    padding: var(--page-padding);
+    background: var(--parchment) center/cover repeat;
+    box-shadow: var(--page-shadow);
+    position: relative;
     overflow: hidden;
-    font-family: var(--font-display);
+    font-family: var(--font-text);
     font-size: var(--reader-font-size);
     line-height: 1.55;
-    background: var(--parchment) center/cover repeat;
-    display: flex; flex-direction: column; justify-content: center;
-    text-align: center;
     color: #2b1a02;
 }
 
-.page { padding: var(--page-padding); }
-
-#nextBtn, #prevBtn {
-    position: absolute; bottom: 2rem;
-    background: none; border: none; cursor: pointer;
-    animation: bounce 2s infinite;
+.page h1, .page h2, .page h3 {
+    font-family: var(--font-title);
+    margin-top: 0;
 }
 
-#nextBtn { right: 2rem; }
-#prevBtn { left: 2rem; }
-
-#fontDecBtn, #fontIncBtn {
-    position: absolute; bottom: 2.5rem;
-    background: none; border: none; cursor: pointer;
-    
+.page h1 {
+    text-transform: capitalize;
 }
 
-#fontDecBtn { left: calc(50% - 2.5rem); }
-#fontIncBtn { right: calc(50% + 0.5rem); }
+/* Drop-cap medieval */
+.page > p:first-of-type::first-letter{
+    float: left;
+    shape-outside: inset(0);
+    font-family: var(--font-title);
+    font-size: 4.2rem;
+    line-height: 1;
+    display: block;
+    width: 1.2em;
+    height: 1.2em;
+    padding: 0.15em;
+    box-sizing: border-box;
+    border: 3px solid #2b1a02;
+    box-shadow: 0 0 4px rgba(0,0,0,.25);
+    background: url("./assets/images/vines.png") center/110% repeat;
+    color: #fff;
+    -webkit-text-stroke: 3px #2b1a02;
+    text-shadow:
+        -3px -3px 0 #2b1a02,
+         3px -3px 0 #2b1a02,
+        -3px  3px 0 #2b1a02,
+         3px  3px 0 #2b1a02;
+    margin: 0 .65rem 0 0;
+}
+
+.reader {
+    position: relative;
+    width: var(--page-width);
+    height: var(--page-height);
+}
+
+.reader button {
+    position: absolute;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.reader button p {
+    margin: 0;
+    font-family: "Caveat", cursive;
+    font-size: 1.25rem;
+    color: #2b1a02;
+    letter-spacing: 0.5px;
+}
+
+/* navegação */
+#prevBtn { bottom: 0; left: 2rem; animation: bounce 2s infinite; }
+#nextBtn { bottom: 0; right: 2rem; animation: bounce 2s infinite; }
 
 @keyframes bounce {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateX(6px); }
 }
 
-/* Botão de fonte será adicionado depois */
+/* fonte */
+#fontDecBtn, #fontIncBtn {
+  bottom: 0rem;
+}
+#fontDecBtn {
+  left: 50%;
+  transform: translateX(-2rem);
+}
+#fontIncBtn {
+  left: 50%;
+  transform: translateX(1rem);
+}
+
+/*----- Xilogravuras Genéricas -----*/
+img {
+    display: inline-block;
+    max-width: 80%;
+    height: auto;
+    /* efeito de xilogravura em p/b (opcional): */
+    filter: grayscale(1) contrast(1.3);
+  }
+
+/*----- Landscape Centrada -----*/
+figure.landscape {
+    max-width: 90%;
+    margin: 1.5rem auto;
+    text-align: center;
+}
+
+figure.landscape img {
+    width: auto;
+    height: auto;
+    max-height: 45vh;
+}
+
+figure.landscape figcaption {
+    font-style: italic;
+    font-size: 0.9rem;
+    margin-top: 0.3rem;
+}
+
+/*----- Retrato Página Inteira -----*/
+.page.fullpage {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.page.fullpage img {
+    flex: 1 0 auto;
+    width: 100%; height: 100%;
+    object-fit: contain;
+}
+
+.page.fullpage figcaption {
+    font-style: italic;
+    text-align: center;
+    padding: 0.5rem, 1rem 1rem; 
+    background: rgba(255, 255, 240, 0.6);
+}
+
+/*----- Sem Classe extra -----*/
+.page p > img:first-child:not([class]) {
+    float: left;
+    shape-outside: inset(0);
+    display: block;
+    width: clamp(7em, 25%, 10em);
+    max-width: 35ch;
+    height: auto;
+    margin: 0 0.8rem 0.5rem 0;
+    box-shadow: 0 0 4px rgba(0,0,0,.25);
+    border: 3px solid #2b1a02;
+    filter: grayscale(1) contrast(1.6) brightness(0.9);
+}
+
+@media (min-width:600px) {
+    .page p > img:first-child:not([class]) {
+        max-width: 25%;
+    }
+}

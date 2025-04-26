@@ -19,6 +19,8 @@ prevBtn.addEventListener('click', prevPage);
 document.addEventListener('keydown', evt => {
     if (evt.key === 'ArrowRight') nextPage();
     if (evt.key === 'ArrowLeft') prevPage();
+    if (evt.key === 'ArrowUp') changeFont(+0.1);
+    if (evt.key === 'ArrowDown') changeFont(-0.1);
 });
 
 function nextPage() {
@@ -60,7 +62,14 @@ async function render() {
     // Capítulo
     const res = await fetch(chaptersPath + chapters[currentPage]);
     const md = await res.text();
-    const html = marked.parse(md);       // usa a lib Marked (adicionar via CDN)
+    const mdWithClasses = md.replace(
+        /!\[([^\]]*)\]\(([^)]+)\)\{\.([^\}]+)\}/g,
+        '<figure class="$3"><img src="$2" alt="$1"></figure>'
+    )
+    const html = marked.parse(mdWithClasses).replace(
+        /<figure class="fullpage">([\s\S]*?)<\/figure>/g,
+        '<section class="page fullpage">$&</section>'
+    );       // usa a lib Marked (adicionar via CDN)
     book.innerHTML = `<section class="page">${html}</section>`;
     saveProgress();
 }
