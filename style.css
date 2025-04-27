@@ -2,15 +2,15 @@
    Variáveis globais
    ======================================================================== */
    :root {
-    --reader-font-size:   1.1rem;
-    --page-padding:       1.5rem;
-    --parchment:          url("./assets/images/parchment.jpg");
-    --font-title:         "IM Fell English SC", serif;
-    --font-text:          "EB Garamond", serif;
-    --bg-surround:        #333;
-    --page-width:         60vw;
-    --control-height:     1rem;
-    --page-shadow:        0 0 30px rgba(0,0,0,.5);
+    --reader-font-size: 1.1rem;
+    --page-padding: 1.5rem;
+    --parchment: url("assets/images/parchment.jpg");
+    --font-title: "IM Fell English SC", serif;
+    --font-text: "EB Garamond", serif;
+    --bg-surround: #333;
+    --page-width: 60vw;
+    --control-height: 1rem;
+    --page-shadow: 0 0 30px rgba(0,0,0,.5);
   }
   
   /* ========================================================================
@@ -33,9 +33,8 @@
     height: 100vh;
     overflow: hidden;
   }
-
+  
   .reader {
-    position: relative;
     width: var(--page-width);
   }
   
@@ -56,33 +55,30 @@
     overflow: hidden;
   }
   
-  /* Títulos */
-  .page h1,
-  .page h2,
-  .page h3 {
-    font-family: var(--font-title);
-    margin-top: 0;
-  }
-  .page h1 {
-    text-transform: capitalize;
-    font-size: 2.5rem;
-    text-align: center;
-    margin: 0 0 1.5rem;
-    line-height: 1.2;
-  }
-  
   /* ========================================================================
      Área de conteúdo (texto + imagens)
      ======================================================================== */
-  .page-content {
+  .page:not(.cover) .page-content {
+    /* moldura decorativa e padding interno */
     padding: var(--page-padding);
     border: 120px solid transparent;
-    border-image-source: url("./assets/images/ornate-border.png");
-    border-image-slice: 256 fill;     /* recorta 256px de cada lado */
-    border-image-width: 120px;        /* aplica 120px de borda */
-    border-image-repeat: round;       /* repete as laterais suavemente */
+    border-image-source: url("assets/images/ornate-border.png");
+    border-image-slice: 256 fill;
+    border-image-width: 120px;
+    border-image-repeat: round;
+  
+    /* reserva espaço para controles */
     height: calc(100% - var(--control-height));
     overflow: hidden;
+  }
+  
+  /* Remove moldura duplicada nas seções injetadas */
+  .page-content#book > section.page {
+    background: transparent;
+    box-shadow: none;
+    padding: 0;
+    width: 100%;
+    height: auto;
   }
   
   /* ========================================================================
@@ -95,6 +91,7 @@
     right: 0;
     height: var(--control-height);
   }
+  
   .page-controls button {
     position: absolute;
     background: none;
@@ -102,31 +99,34 @@
     cursor: pointer;
     z-index: 10;
   }
-  /* Botões de navegação */
+  
   .page-controls #prevBtn {
     left: 2rem;
+    bottom: calc(var(--control-height)/2 - 0.625rem);
     animation: bounce 2s infinite;
   }
+  
   .page-controls #nextBtn {
     right: 2rem;
+    bottom: calc(var(--control-height)/2 - 0.625rem);
     animation: bounce 2s infinite;
   }
-  /* Botões de fonte */
-  .page-controls #prevBtn,
-  .page-controls #nextBtn,
+  
   .page-controls #fontDecBtn,
   .page-controls #fontIncBtn {
     bottom: calc(var(--control-height)/2 - 0.625rem);
   }
+  
   .page-controls #fontDecBtn {
     left: 50%;
     transform: translateX(-2rem);
   }
+  
   .page-controls #fontIncBtn {
     left: 50%;
     transform: translateX(1rem);
   }
-  /* Estilo do texto dos botões */
+  
   .page-controls button p {
     margin: 0;
     font-family: "Caveat", cursive;
@@ -135,9 +135,6 @@
     letter-spacing: 0.5px;
   }
   
-  /* ========================================================================
-     Animação dos botões
-     ======================================================================== */
   @keyframes bounce {
     0%, 100% { transform: translateY(0); }
     50%      { transform: translateX(6px); }
@@ -146,7 +143,7 @@
   /* ========================================================================
      Drop-cap medieval
      ======================================================================== */
-  .page-content > p:first-of-type::first-letter {
+  .page-content p:first-of-type::first-letter {
     float: left;
     shape-outside: inset(0);
     font-family: var(--font-title);
@@ -158,7 +155,7 @@
     padding: 0.15em;
     border: 3px solid #2b1a02;
     box-shadow: 0 0 4px rgba(0,0,0,.25);
-    background: url("./assets/images/vines.png") center/110% repeat;
+    background: url("assets/images/vines.png") center/110% repeat;
     color: #fff;
     -webkit-text-stroke: 3px #2b1a02;
     text-shadow:
@@ -177,7 +174,6 @@
     shape-outside: inset(0);
     display: block;
     width: clamp(7em, 25%, 10em);
-    height: auto;
     margin: 0 0.8rem 0.5rem 0;
     border: 3px solid #2b1a02;
     box-shadow: 0 0 4px rgba(0,0,0,.25);
@@ -192,11 +188,13 @@
     margin: 1.5rem auto;
     text-align: center;
   }
+  
   .page-content figure.landscape img {
     max-height: 45vh;
     width: auto;
     height: auto;
   }
+  
   .page-content figure.landscape figcaption {
     font-style: italic;
     font-size: .9rem;
@@ -212,12 +210,14 @@
     flex-direction: column;
     justify-content: center;
   }
+  
   .page.fullpage .page-content img {
     flex: 1 0 auto;
     width: 100%;
     height: 100%;
     object-fit: contain;
   }
+  
   .page.fullpage .page-content figcaption {
     font-style: italic;
     text-align: center;
@@ -226,14 +226,292 @@
   }
   
   /* ========================================================================
-   Remove a moldura/parchment duplicada das seções injetadas em #book
-   ======================================================================== */
-/* Seleciona só o <section class="page"> que está dentro do .page-content#book */
-.page-content#book > section.page {
-    background: transparent;   /* herda o pergaminho da mãe */
-    box-shadow: none;          /* sem sombra duplicada */
-    padding: 0;                /* sem padding extra */
+     Estilos especiais para CAPA (section.cover)
+     ======================================================================== */
+     section.page.cover {
+      box-sizing: border-box;
+      width: var(--page-width);
+      height: 100vh;
+    
+      background-image: url("assets/images/cover/leather-background.png");
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-origin: border-box;
+      background-clip: border-box;
+    
+      border: 100px solid transparent;
+      border-image-source: url("assets/images/cover/cover-border.png");
+      border-image-slice: 180 fill;
+      border-image-width: 100px;
+      border-image-repeat: no-repeat;
+    
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+  
+  /* ========================================================================
+     Estrutura interna da capa
+     ======================================================================== */
+  section.page.cover .page-content {
     width: 100%;
-    height: auto;              /* deixa o texto fluir livremente */
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
   
+  /* Emblema central */
+  .cover-emblem {
+    width: 150px;
+    height: 150px;
+    margin-bottom: 1.5rem;
+  }
+  
+  .cover-emblem img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  
+  /* Título + subtítulo como imagem única */
+  .cover-title {
+    width: 60%;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .cover-title img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  
+  /* Opcional: esconder controles na capa */
+  section.page.cover .page-controls {
+    display: block;
+
+  }
+
+  section.page.cover .page-controls button:not(#nextBtn) {
+    display: none;
+  }
+  
+  section.page.cover .page-controls #nextBtn {
+    padding: 0.75rem;
+    transform: scale(1.8);
+  }
+  
+  section.page.cover .page-controls #nextBtn p {
+    color: #fff;        /* seta branca */
+    font-size: 2rem;    /* seta maior */
+  }
+
+  /* ==== Contracapa igual à capa ==== */
+section.page.back {
+  /* mesmo box-sizing, dimensões e estilo de fundo da capa */
+  box-sizing: border-box;
+  width: var(--page-width);
+  height: 100vh;
+  background-image: url("assets/images/cover/leather-background.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-origin: border-box;
+  background-clip: border-box;
+
+  /* mesma moldura */
+  border: 100px solid transparent;
+  border-image-source: url("assets/images/cover/cover-border.png");
+  border-image-slice: 180 fill;
+  border-image-width: 100px;
+  border-image-repeat: no-repeat;
+
+  /* centraliza controles (apenas prev) verticalmente */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* esconde todo o conteúdo interno (texto, título etc) */
+section.page.back .page-content {
+  display: none;
+}
+
+/* mostra o container de controles e oculta todos os botões, exceto o “prevBtn” */
+section.page.back .page-controls {
+  display: block;
+}
+section.page.back .page-controls button:not(#prevBtn) {
+  display: none;
+}
+
+/* deixa o botão “←” grandão e branco */
+section.page.back .page-controls #prevBtn {
+  padding: 0.75rem;
+  transform: scale(1.8);
+}
+section.page.back .page-controls #prevBtn p {
+  color: #fff;
+  font-size: 2rem;
+}
+
+/* === capa original: só NEXT === */
+section.page.cover:not(.back) .page-controls button:not(#nextBtn) {
+  display: none;
+}
+
+/* === contracapa: só PREV === */
+section.page.cover.back .page-controls button:not(#prevBtn) {
+  display: none;
+}
+
+/* === estilização das setas grandes e brancas === */
+section.page.cover:not(.back) #nextBtn,
+section.page.cover.back    #prevBtn {
+  padding: 0.75rem;
+  transform: scale(1.8);
+}
+
+section.page.cover:not(.back) #nextBtn p,
+section.page.cover.back    #prevBtn p {
+  color: #fff;
+  font-size: 2rem;
+}
+
+/* ==== Contracapa: mostrar só o prevBtn e garantir que ela esteja visível ==== */
+section.page.cover.back {
+  /* já herda todo o estilo de .page.cover, só precisamos forçar o display */
+  display: flex;           /* substituir qualquer display:none */
+}
+
+section.page.cover.back .page-controls {
+  display: block;
+}
+
+/* Esconde todos os botões, exceto o botão de voltar */
+section.page.cover.back .page-controls button:not(#prevBtn) {
+  display: none;
+}
+
+/* Posiciona e estiliza o prevBtn na contracapa */
+section.page.cover.back .page-controls #prevBtn {
+  position: absolute;
+  left: 2rem;
+  bottom: calc(var(--control-height)/2 - 0.625rem);
+  padding: 0.75rem;
+  transform: scale(1.8);
+  display: block;
+}
+
+section.page.cover.back .page-controls #prevBtn p {
+  color: #fff;
+  font-size: 2rem;
+}
+
+/* ========================================================================
+   Garante que o container de controles fique visível na capa e contracapa
+   ======================================================================== */
+   section.page.cover .page-controls {
+    display: block;
+  }
+  
+  /* ========================================================================
+     CAPA (section.page.cover sem a classe .back) — só seta “→”
+     ======================================================================== */
+  /* Esconde todo botão */
+  section.page.cover:not(.back) .page-controls button {
+    display: none;
+  }
+  /* Mostra só o nextBtn */
+  section.page.cover:not(.back) .page-controls #nextBtn {
+    display: block;
+    position: absolute;
+    right: 2rem;
+    bottom: calc(var(--control-height)/2 - 0.625rem);
+    padding: 0.75rem;
+    transform: scale(1.8);
+  }
+  /* Estilo do “→” */
+  section.page.cover:not(.back) .page-controls #nextBtn p {
+    color: #fff;
+    font-size: 2rem;
+  }
+  
+  /* ========================================================================
+     CONTRACAPA (section.page.cover.back) — só seta “←”
+     ======================================================================== */
+  /* Esconde todo botão */
+  section.page.cover.back .page-controls button {
+    display: none;
+  }
+  /* Mostra só o prevBtn */
+  section.page.cover.back .page-controls #prevBtn {
+    display: block;
+    position: absolute;
+    left: 2rem;
+    bottom: calc(var(--control-height)/2 - 0.625rem);
+    padding: 0.75rem;
+    transform: scale(1.8);
+  }
+  /* Estilo do “←” */
+  section.page.cover.back .page-controls #prevBtn p {
+    color: #fff;
+    font-size: 2rem;
+  }
+  
+  /* ========================================================================
+   CONTROLES GERAIS
+   ======================================================================== */
+section.page.cover .page-controls {
+  display: block; /* garante visível em capa e contracapa */
+}
+
+/* ========================================================================
+   CAPA (section.page.cover sem .back) — só seta “→”
+   ======================================================================== */
+/* Esconde prev e botões de fonte */
+section.page.cover:not(.back) .page-controls button#prevBtn,
+section.page.cover:not(.back) .page-controls button#fontDecBtn,
+section.page.cover:not(.back) .page-controls button#fontIncBtn {
+  display: none !important;
+}
+/* Mostra e estiliza só o nextBtn */
+section.page.cover:not(.back) .page-controls button#nextBtn {
+  display: block !important;
+  position: absolute;
+  right: 2rem;
+  bottom: calc(var(--control-height)/2 - 0.625rem);
+  padding: 0.75rem;
+  transform: scale(1.8);
+}
+section.page.cover:not(.back) .page-controls button#nextBtn p {
+  color: #fff !important;
+  font-size: 2rem !important;
+}
+
+/* ========================================================================
+   CONTRACAPA (section.page.cover.back) — só seta “←”
+   ======================================================================== */
+/* Esconde next e botões de fonte */
+section.page.cover.back .page-controls button#nextBtn,
+section.page.cover.back .page-controls button#fontDecBtn,
+section.page.cover.back .page-controls button#fontIncBtn {
+  display: none !important;
+}
+/* Mostra e estiliza só o prevBtn */
+section.page.cover.back .page-controls button#prevBtn {
+  display: block !important;
+  position: absolute;
+  left: 2rem;
+  bottom: calc(var(--control-height)/2 - 0.625rem);
+  padding: 0.75rem;
+  transform: scale(1.8);
+}
+section.page.cover.back .page-controls button#prevBtn p {
+  color: #fff !important;
+  font-size: 2rem !important;
+}

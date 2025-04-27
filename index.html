@@ -14,10 +14,17 @@
 <body>
   <div class="reader">
     <!-- Capa -->
-    <section id="cover" class="page">
+    <section id="cover" class="page cover">
       <div class="page-content">
-        <h1>Portão de Baldur - A Cicatriz Sob a Pele</h1>
-        <p>Uma aventura no mundo de Forgotten Realms</p>
+        <!-- Emblema central -->
+        <div class="cover-emblem">
+          <img src="assets/images/cover/emblem.png" alt="Emblema de Baldur">
+        </div>
+        <!-- Título + subtítulo como imagem única -->
+        <div class="cover-title">
+          <img src="assets/images/cover/cover-title.PNG"
+               alt="Portão de Baldur — A Cicatriz Sob a Pele">
+        </div>
       </div>
       <div class="page-controls">
         <button id="prevBtn" aria-label="Voltar página"><p>←</p></button>
@@ -28,7 +35,7 @@
     </section>
 
     <!-- Páginas de texto (injetadas pelo JS) -->
-    <section class="page">
+    <section id= "pages" class="page">
       <div class="page-content" id="book">
         <!-- O main.js injetará aqui o HTML dos capítulos -->
       </div>
@@ -41,23 +48,12 @@
     </section>
   </div>
 
-  <!-- Contracapa (injetada pelo JS no final), já com wrappers iguais -->
+  <!-- Contracapa (injetada pelo JS no final) -->
   <template id="back-cover">
-    <section class="page back">
-      <div class="page-content">
-        <h2>Uma aventura Dungeons and Dragons</h2>
-        <p>
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-          Vitae autem fuga id officiis fugiat totam modi asperiores
-          consequuntur odio, qui hic repellat doloribus veritatis
-          enim aperiam quam reprehenderit blanditiis ab.
-        </p>
-      </div>
+    <section id="back-cover-page" class="page cover back" style="display: none;">
+      <div class="page-content"></div>
       <div class="page-controls">
         <button id="prevBtn" aria-label="Voltar página"><p>←</p></button>
-        <button id="fontDecBtn" aria-label="Diminuir fonte"><p>A-</p></button>
-        <button id="fontIncBtn" aria-label="Aumentar fonte"><p>A+</p></button>
-        <button id="nextBtn" aria-label="Avançar página"><p>→</p></button>
       </div>
     </section>
   </template>

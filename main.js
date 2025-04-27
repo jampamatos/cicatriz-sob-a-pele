@@ -10,6 +10,13 @@ const prevBtn = document.getElementById('prevBtn');
 const fontDecBtn = document.getElementById('fontDecBtn');
 const fontIncBtn = document.getElementById('fontIncBtn');
 
+const cover = document.getElementById('cover');
+const pages = document.getElementById('pages');
+const reader = document.querySelector('.reader');
+const tpl = document.getElementById('back-cover');
+
+let backPage = null;
+
 document.body.addEventListener('click', evt => {
     const btn = evt.target.closest('button');
     if (!btn) return;
@@ -50,44 +57,56 @@ function prevPage() {
 }
 
 async function render() {
-    const cover = document.getElementById('cover');
-
-
     // Capa?
     if (currentPage === -1) {
         cover.style.display = 'flex';
-        book.innerHTML = '';
-        prevBtn.style.display = 'none';
-        nextBtn.style.display = 'block';
+        pages.style.display = 'none';
+        if (backPage) backPage.style.display = 'none';
         return;
     }
 
-    // Páginas
-    cover.style.display = 'none';
-    prevBtn.style.display = 'block';
-    nextBtn.style.display = 'block';
+    // Texto (capítulos)
+    if (currentPage < chapters.length) {
+        cover.style.display = 'none';
+        pages.style.display = 'block';
+        if (backPage) backPage.style.display = 'none';
+        // carrega o markdown dentro de #book...
+        const res = await fetch(chaptersPath + chapters[currentPage]);
+        const md = await res.text();
+        const mdWithClasses = md.replace(
+            /!\[([^\]]*)\]\(([^)]+)\)\{\.([^\}]+)\}/g,
+            '<figure class="$3"><img src="$2" alt="$1"></figure>'
+        )
+        const html = marked.parse(mdWithClasses).replace(
+            /<figure class="fullpage">([\s\S]*?)<\/figure>/g,
+            '<section class="page fullpage">$&</section>'
+        );       // usa a lib Marked (adicionar via CDN)
+        book.innerHTML = `<section class="page">${html}</section>`;
+        saveProgress();
+        return;
+    }
 
-    // Contracapa?
+    // ==== Contracapa ====
     if (currentPage === chapters.length) {
-        book.innerHTML = document.getElementById('back-cover').innerHTML;
-        prevBtn.style.display = 'block';
+        // 1) Esconde capa e páginas
+        cover.style.display = 'none';
+        pages.style.display = 'none';
+    
+        // 2) Clona o template UMA vez, se ainda não clonou
+        if (!backPage) {
+        const clone = tpl.content.cloneNode(true);
+        reader.appendChild(clone);
+        backPage = document.getElementById('back-cover-page');
+        }
+    
+        // 3) Exibe a contracapa
+        backPage.style.display = 'flex';
+    
+        // 4) Esconder o botão “next” e manter apenas o “prev”
         nextBtn.style.display = 'none';
+        prevBtn.style.display = 'block';
         return;
     }
-
-    // Capítulo
-    const res = await fetch(chaptersPath + chapters[currentPage]);
-    const md = await res.text();
-    const mdWithClasses = md.replace(
-        /!\[([^\]]*)\]\(([^)]+)\)\{\.([^\}]+)\}/g,
-        '<figure class="$3"><img src="$2" alt="$1"></figure>'
-    )
-    const html = marked.parse(mdWithClasses).replace(
-        /<figure class="fullpage">([\s\S]*?)<\/figure>/g,
-        '<section class="page fullpage">$&</section>'
-    );       // usa a lib Marked (adicionar via CDN)
-    book.innerHTML = `<section class="page">${html}</section>`;
-    saveProgress();
 }
 
 /* ----- Persistência ----- */
