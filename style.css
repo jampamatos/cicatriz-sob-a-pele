@@ -1,316 +1,276 @@
-/* ========================================================================
-   Variáveis globais
-   ======================================================================== */
-   :root {
-    --reader-font-size: 1.1rem;
-    --page-padding: 1.5rem;
-    --parchment: url("assets/images/parchment.jpg");
-    --font-title: "IM Fell English SC", serif;
-    --font-text: "EB Garamond", serif;
-    --bg-surround: #333;
-    --page-width: 60vw;
-    --control-height: 1rem;
-    --page-shadow: 0 0 30px rgba(0,0,0,.5);
-  }
+:root {
+  --reader-font-size: 1.1rem;
+  --page-padding: 1.5rem;
+  --parchment: url("assets/images/parchment.jpg");
+  --font-title: "IM Fell English SC", serif;
+  --font-text: "EB Garamond", serif;
+  --bg-surround: #333;
+  --page-width: 60vw;
+  --control-height: 1rem;
+  --page-shadow: 0 0 30px rgba(0,0,0,.5);
+}
   
-  /* ========================================================================
-     Box sizing
-     ======================================================================== */
-  *, *::before, *::after {
-    box-sizing: border-box;
-  }
+*, *::before, *::after {
+  box-sizing: border-box;
+}
   
-  /* ========================================================================
-     Body e container principal
-     ======================================================================== */
-  body {
-    margin: 0;
-    padding: 0;
-    background: var(--bg-surround);
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    height: 100vh;
-    overflow: hidden;
-  }
-  
-  .reader {
-    width: var(--page-width);
-  }
-  
-  /* ========================================================================
-     Página (folha de pergaminho)
-     ======================================================================== */
-  .page {
-    position: relative;
-    width: var(--page-width);
-    height: 100vh;
-    padding: var(--page-padding);
-    background: var(--parchment) center/cover repeat;
-    box-shadow: var(--page-shadow);
-    font-family: var(--font-text);
-    font-size: var(--reader-font-size);
-    line-height: 1.55;
-    color: #2b1a02;
-    overflow: hidden;
-  }
-  
-  /* ========================================================================
-     Área de conteúdo (texto + imagens)
-     ======================================================================== */
-  .page:not(.cover) .page-content {
-    /* moldura decorativa e padding interno */
-    padding: var(--page-padding);
-    border: 120px solid transparent;
-    border-image-source: url("assets/images/ornate-border.png");
-    border-image-slice: 256 fill;
-    border-image-width: 120px;
-    border-image-repeat: round;
-  
-    /* reserva espaço para controles */
-    height: calc(100% - var(--control-height));
-    overflow: hidden;
-  }
-  
-  /* Remove moldura duplicada nas seções injetadas */
-  .page-content#book > section.page {
-    background: transparent;
-    box-shadow: none;
-    padding: 0;
-    width: 100%;
-    height: auto;
-  }
-  
-  /* ========================================================================
-     Controles fixos dentro da página
-     ======================================================================== */
-  .page-controls {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: var(--control-height);
-  }
-  
-  .page-controls button {
-    position: absolute;
-    background: none;
-    border: none;
-    cursor: pointer;
-    z-index: 10;
-  }
-  
-  .page-controls #prevBtn {
-    left: 2rem;
-    bottom: calc(var(--control-height)/2 - 0.625rem);
-    animation: bounce 2s infinite;
-  }
-  
-  .page-controls #nextBtn {
-    right: 2rem;
-    bottom: calc(var(--control-height)/2 - 0.625rem);
-    animation: bounce 2s infinite;
-  }
-  
-  .page-controls #fontDecBtn,
-  .page-controls #fontIncBtn {
-    bottom: calc(var(--control-height)/2 - 0.625rem);
-  }
-  
-  .page-controls #fontDecBtn {
-    left: 50%;
-    transform: translateX(-2rem);
-  }
-  
-  .page-controls #fontIncBtn {
-    left: 50%;
-    transform: translateX(1rem);
-  }
-  
-  .page-controls button p {
-    margin: 0;
-    font-family: "Caveat", cursive;
-    font-size: 1.25rem;
-    color: #2b1a02;
-    letter-spacing: 0.5px;
-  }
-  
-  @keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50%      { transform: translateX(6px); }
-  }
-  
-  /* ========================================================================
-     Drop-cap medieval
-     ======================================================================== */
-  .page-content p:first-of-type::first-letter {
-    float: left;
-    shape-outside: inset(0);
-    font-family: var(--font-title);
-    font-size: 4.2rem;
-    line-height: 1;
-    display: block;
-    width: 1.2em;
-    height: 1.2em;
-    padding: 0.15em;
-    border: 3px solid #2b1a02;
-    box-shadow: 0 0 4px rgba(0,0,0,.25);
-    background: url("assets/images/vines.png") center/110% repeat;
-    color: #fff;
-    -webkit-text-stroke: 3px #2b1a02;
-    text-shadow:
-      -3px -3px 0 #2b1a02,
-       3px -3px 0 #2b1a02,
-      -3px  3px 0 #2b1a02,
-       3px  3px 0 #2b1a02;
-    margin: 0 .65rem 0 0;
-  }
-  
-  /* ========================================================================
-     Xilogravuras Genéricas (imagens inline sem classe)
-     ======================================================================== */
-  .page-content p > img:first-child:not([class]) {
-    float: left;
-    shape-outside: inset(0);
-    display: block;
-    width: clamp(7em, 25%, 10em);
-    margin: 0 0.8rem 0.5rem 0;
-    border: 3px solid #2b1a02;
-    box-shadow: 0 0 4px rgba(0,0,0,.25);
-    filter: grayscale(1) contrast(1.6) brightness(0.9);
-  }
-  
-  /* ========================================================================
-     Miniaturas “landscape” centralizadas
-     ======================================================================== */
-  .page-content figure.landscape {
-    max-width: 90%;
-    margin: 1.5rem auto;
-    text-align: center;
-  }
-  
-  .page-content figure.landscape img {
-    max-height: 45vh;
-    width: auto;
-    height: auto;
-  }
-  
-  .page-content figure.landscape figcaption {
-    font-style: italic;
-    font-size: .9rem;
-    margin-top: .3rem;
-  }
-  
-  /* ========================================================================
-     Ilustrações de página inteira (“fullpage”)
-     ======================================================================== */
-  .page.fullpage .page-content {
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-  
-  .page.fullpage .page-content img {
-    flex: 1 0 auto;
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-  }
-  
-  .page.fullpage .page-content figcaption {
-    font-style: italic;
-    text-align: center;
-    padding: .5rem 1rem 1rem;
-    background: rgba(255,255,240,.6);
-  }
-  
-  /* ========================================================================
-     Estilos especiais para CAPA (section.cover)
-     ======================================================================== */
-     section.page.cover {
-      box-sizing: border-box;
-      width: var(--page-width);
-      height: 100vh;
-    
-      background-image: url("assets/images/cover/leather-background.png");
-      background-size: cover;
-      background-repeat: no-repeat;
-      background-position: center;
-      background-origin: border-box;
-      background-clip: border-box;
-    
-      border: 100px solid transparent;
-      border-image-source: url("assets/images/cover/cover-border.png");
-      border-image-slice: 180 fill;
-      border-image-width: 100px;
-      border-image-repeat: no-repeat;
-    
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-  
-  /* ========================================================================
-     Estrutura interna da capa
-     ======================================================================== */
-  section.page.cover .page-content {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  /* Emblema central */
-  .cover-emblem {
-    width: 150px;
-    height: 150px;
-    margin-bottom: 1.5rem;
-  }
-  
-  .cover-emblem img {
-    display: block;
-    width: 100%;
-    height: auto;
-  }
-  
-  /* Título + subtítulo como imagem única */
-  .cover-title {
-    width: 60%;
-    max-width: 600px;
-    margin: 0 auto;
-  }
-  
-  .cover-title img {
-    display: block;
-    width: 100%;
-    height: auto;
-  }
-  
-  /* Opcional: esconder controles na capa */
-  section.page.cover .page-controls {
-    display: block;
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg-surround);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  height: 100vh;
+  overflow: hidden;
+}
 
-  }
-
-  section.page.cover .page-controls button:not(#nextBtn) {
-    display: none;
-  }
+.reader {
+  width: var(--page-width);
+}
   
-  section.page.cover .page-controls #nextBtn {
-    padding: 0.75rem;
-    transform: scale(1.8);
-  }
+.page {
+  position: relative;
+  width: var(--page-width);
+  height: 100vh;
+  padding: var(--page-padding);
+  background: var(--parchment) center/cover repeat;
+  box-shadow: var(--page-shadow);
+  font-family: var(--font-text);
+  font-size: var(--reader-font-size);
+  line-height: 1.55;
+  color: #2b1a02;
+  overflow: hidden;
+}
   
-  section.page.cover .page-controls #nextBtn p {
-    color: #fff;        /* seta branca */
-    font-size: 2rem;    /* seta maior */
-  }
+.page:not(.cover) .page-content {
+  padding: var(--page-padding);
+  border: 120px solid transparent;
+  border-image-source: url("assets/images/ornate-border.png");
+  border-image-slice: 256 fill;
+  border-image-width: 120px;
+  border-image-repeat: round;
 
-  /* ==== Contracapa igual à capa ==== */
+  height: calc(100% - var(--control-height));
+  overflow: hidden;
+}
+  
+.page-content#book > section.page {
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+  width: 100%;
+  height: auto;
+}
+  
+.page-controls {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: var(--control-height);
+}
+
+.page-controls button {
+  position: absolute;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.page-controls #prevBtn {
+  left: 2rem;
+  bottom: calc(var(--control-height)/2 - 0.625rem);
+  animation: bounce 2s infinite;
+}
+
+.page-controls #nextBtn {
+  right: 2rem;
+  bottom: calc(var(--control-height)/2 - 0.625rem);
+  animation: bounce 2s infinite;
+}
+
+.page-controls #fontDecBtn,
+.page-controls #fontIncBtn {
+  bottom: calc(var(--control-height)/2 - 0.625rem);
+}
+
+.page-controls #fontDecBtn {
+  left: 50%;
+  transform: translateX(-2rem);
+}
+
+.page-controls #fontIncBtn {
+  left: 50%;
+  transform: translateX(1rem);
+}
+
+.page-controls button p {
+  margin: 0;
+  font-family: "Caveat", cursive;
+  font-size: 1.25rem;
+  color: #2b1a02;
+  letter-spacing: 0.5px;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateX(6px); }
+}
+  
+/* Drop-cap medieval */
+.page-content p:first-of-type::first-letter {
+  float: left;
+  shape-outside: inset(0);
+  font-family: var(--font-title);
+  font-size: 4.2rem;
+  line-height: 1;
+  display: block;
+  width: 1.2em;
+  height: 1.2em;
+  padding: 0.15em;
+  border: 3px solid #2b1a02;
+  box-shadow: 0 0 4px rgba(0,0,0,.25);
+  background: url("assets/images/vines.png") center/110% repeat;
+  color: #fff;
+  -webkit-text-stroke: 3px #2b1a02;
+  text-shadow:
+    -3px -3px 0 #2b1a02,
+      3px -3px 0 #2b1a02,
+    -3px  3px 0 #2b1a02,
+      3px  3px 0 #2b1a02;
+  margin: 0 .65rem 0 0;
+}
+  
+/* Xilogravuras Genéricas (imagens inline sem classe) */
+.page-content p > img:first-child:not([class]) {
+  float: left;
+  shape-outside: inset(0);
+  display: block;
+  width: clamp(7em, 25%, 10em);
+  margin: 0 0.8rem 0.5rem 0;
+  border: 3px solid #2b1a02;
+  box-shadow: 0 0 4px rgba(0,0,0,.25);
+  filter: grayscale(1) contrast(1.6) brightness(0.9);
+}
+  
+/* Miniaturas “landscape” centralizadas */
+.page-content figure.landscape {
+  max-width: 90%;
+  margin: 1.5rem auto;
+  text-align: center;
+}
+
+.page-content figure.landscape img {
+  max-height: 45vh;
+  width: auto;
+  height: auto;
+}
+
+.page-content figure.landscape figcaption {
+  font-style: italic;
+  font-size: .9rem;
+  margin-top: .3rem;
+}
+
+/* Ilustrações de página inteira (“fullpage”) */
+.page.fullpage .page-content {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.page.fullpage .page-content img {
+  flex: 1 0 auto;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.page.fullpage .page-content figcaption {
+  font-style: italic;
+  text-align: center;
+  padding: .5rem 1rem 1rem;
+  background: rgba(255,255,240,.6);
+}
+  
+  section.page.cover {
+  box-sizing: border-box;
+  width: var(--page-width);
+  height: 100vh;
+
+  background-image: url("assets/images/cover/leather-background.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-origin: border-box;
+  background-clip: border-box;
+
+  border: 100px solid transparent;
+  border-image-source: url("assets/images/cover/cover-border.png");
+  border-image-slice: 180 fill;
+  border-image-width: 100px;
+  border-image-repeat: no-repeat;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Estrutura interna da capa */
+section.page.cover .page-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Emblema central */
+.cover-emblem {
+  width: 150px;
+  height: 150px;
+  margin-bottom: 1.5rem;
+}
+
+.cover-emblem img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Título + subtítulo como imagem única */
+.cover-title {
+  width: 60%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.cover-title img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+section.page.cover .page-controls button:not(#nextBtn) {
+  display: none;
+}
+
+section.page.cover .page-controls #nextBtn {
+  padding: 0.75rem;
+  transform: scale(1.8);
+}
+
+section.page.cover .page-controls #nextBtn p {
+  color: #fff;        /* seta branca */
+  font-size: 2rem;    /* seta maior */
+}
+
+/* Contracapa igual à capa */
 section.page.back {
   /* mesmo box-sizing, dimensões e estilo de fundo da capa */
   box-sizing: border-box;
@@ -336,144 +296,7 @@ section.page.back {
   justify-content: center;
 }
 
-/* esconde todo o conteúdo interno (texto, título etc) */
-section.page.back .page-content {
-  display: none;
-}
-
-/* mostra o container de controles e oculta todos os botões, exceto o “prevBtn” */
-section.page.back .page-controls {
-  display: block;
-}
-section.page.back .page-controls button:not(#prevBtn) {
-  display: none;
-}
-
-/* deixa o botão “←” grandão e branco */
-section.page.back .page-controls #prevBtn {
-  padding: 0.75rem;
-  transform: scale(1.8);
-}
-section.page.back .page-controls #prevBtn p {
-  color: #fff;
-  font-size: 2rem;
-}
-
-/* === capa original: só NEXT === */
-section.page.cover:not(.back) .page-controls button:not(#nextBtn) {
-  display: none;
-}
-
-/* === contracapa: só PREV === */
-section.page.cover.back .page-controls button:not(#prevBtn) {
-  display: none;
-}
-
-/* === estilização das setas grandes e brancas === */
-section.page.cover:not(.back) #nextBtn,
-section.page.cover.back    #prevBtn {
-  padding: 0.75rem;
-  transform: scale(1.8);
-}
-
-section.page.cover:not(.back) #nextBtn p,
-section.page.cover.back    #prevBtn p {
-  color: #fff;
-  font-size: 2rem;
-}
-
-/* ==== Contracapa: mostrar só o prevBtn e garantir que ela esteja visível ==== */
-section.page.cover.back {
-  /* já herda todo o estilo de .page.cover, só precisamos forçar o display */
-  display: flex;           /* substituir qualquer display:none */
-}
-
-section.page.cover.back .page-controls {
-  display: block;
-}
-
-/* Esconde todos os botões, exceto o botão de voltar */
-section.page.cover.back .page-controls button:not(#prevBtn) {
-  display: none;
-}
-
-/* Posiciona e estiliza o prevBtn na contracapa */
-section.page.cover.back .page-controls #prevBtn {
-  position: absolute;
-  left: 2rem;
-  bottom: calc(var(--control-height)/2 - 0.625rem);
-  padding: 0.75rem;
-  transform: scale(1.8);
-  display: block;
-}
-
-section.page.cover.back .page-controls #prevBtn p {
-  color: #fff;
-  font-size: 2rem;
-}
-
-/* ========================================================================
-   Garante que o container de controles fique visível na capa e contracapa
-   ======================================================================== */
-   section.page.cover .page-controls {
-    display: block;
-  }
-  
-  /* ========================================================================
-     CAPA (section.page.cover sem a classe .back) — só seta “→”
-     ======================================================================== */
-  /* Esconde todo botão */
-  section.page.cover:not(.back) .page-controls button {
-    display: none;
-  }
-  /* Mostra só o nextBtn */
-  section.page.cover:not(.back) .page-controls #nextBtn {
-    display: block;
-    position: absolute;
-    right: 2rem;
-    bottom: calc(var(--control-height)/2 - 0.625rem);
-    padding: 0.75rem;
-    transform: scale(1.8);
-  }
-  /* Estilo do “→” */
-  section.page.cover:not(.back) .page-controls #nextBtn p {
-    color: #fff;
-    font-size: 2rem;
-  }
-  
-  /* ========================================================================
-     CONTRACAPA (section.page.cover.back) — só seta “←”
-     ======================================================================== */
-  /* Esconde todo botão */
-  section.page.cover.back .page-controls button {
-    display: none;
-  }
-  /* Mostra só o prevBtn */
-  section.page.cover.back .page-controls #prevBtn {
-    display: block;
-    position: absolute;
-    left: 2rem;
-    bottom: calc(var(--control-height)/2 - 0.625rem);
-    padding: 0.75rem;
-    transform: scale(1.8);
-  }
-  /* Estilo do “←” */
-  section.page.cover.back .page-controls #prevBtn p {
-    color: #fff;
-    font-size: 2rem;
-  }
-  
-  /* ========================================================================
-   CONTROLES GERAIS
-   ======================================================================== */
-section.page.cover .page-controls {
-  display: block; /* garante visível em capa e contracapa */
-}
-
-/* ========================================================================
-   CAPA (section.page.cover sem .back) — só seta “→”
-   ======================================================================== */
-/* Esconde prev e botões de fonte */
+/* Controles da Capa */
 section.page.cover:not(.back) .page-controls button#prevBtn,
 section.page.cover:not(.back) .page-controls button#fontDecBtn,
 section.page.cover:not(.back) .page-controls button#fontIncBtn {
@@ -489,14 +312,11 @@ section.page.cover:not(.back) .page-controls button#nextBtn {
   transform: scale(1.8);
 }
 section.page.cover:not(.back) .page-controls button#nextBtn p {
-  color: #fff !important;
-  font-size: 2rem !important;
+  color: #fff;
+  font-size: 2rem;
 }
 
-/* ========================================================================
-   CONTRACAPA (section.page.cover.back) — só seta “←”
-   ======================================================================== */
-/* Esconde next e botões de fonte */
+/* Controles da Contracapa */
 section.page.cover.back .page-controls button#nextBtn,
 section.page.cover.back .page-controls button#fontDecBtn,
 section.page.cover.back .page-controls button#fontIncBtn {
@@ -512,6 +332,103 @@ section.page.cover.back .page-controls button#prevBtn {
   transform: scale(1.8);
 }
 section.page.cover.back .page-controls button#prevBtn p {
-  color: #fff !important;
-  font-size: 2rem !important;
+  color: #fff;
+  font-size: 2rem;
 }
+
+/* Media Queries */
+@media (max-width: 1023px) {
+  :root {
+    --control-height: 2rem;
+    --page-width: 90vw;
+  }
+  
+  .reader {
+    width: 100vw !important;
+    max-width: none !important;
+    height: 100vh !important;
+    margin: 0;
+  }
+  body {
+    background: var(--parchment) center/cover repeat !important;
+    overflow: hidden;
+  }
+  
+  section.page.cover,
+  section.page.cover.back {
+    width: 100vw !important;
+    height: 100vh !important;
+
+    /* mantém o background da capa */
+    background-image: url("assets/images/cover/leather-background.png") !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-origin: border-box;
+    background-clip: border-box;
+
+    /* reduz a moldura, mas não remove */
+    border: 80px solid transparent !important;
+    border-image-source: url("assets/images/cover/cover-border.png") !important;
+    border-image-slice: 180 fill !important;
+    border-image-width: 50px !important;
+    border-image-repeat: no-repeat !important;
+    box-shadow: none !important;
+  }
+
+  section.page.cover .page-controls #nextBtn,
+  section.page.cover.back .page-controls #prevBtn {
+    transform: none !important;
+    padding: 0 !important;
+  }
+
+  section.page.cover .page-controls button p,
+  section.page.cover.back .page-controls button p {
+    color: #2b1a02 !important;
+  }
+
+  .page {
+    padding: 0 !important;
+  }
+  
+  .page:not(.cover) {
+    width: 100vw !important;
+    height: 100vh !important;
+    padding: 0 !important;
+    background: var(--parchment) center/cover repeat !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+  .page:not(.cover) .page-content {
+    padding: 0.25rem !important;
+    margin: 0 !important;
+    border: 25px solid transparent !important;
+    border-image-source: url("assets/images/ornate-border.png") !important;
+    border-image-slice: 256 fill !important;
+    border-image-width: 25px !important;
+    border-image-repeat: round !important;
+    height: calc(100% - var(--control-height) - 0.25rem) !important;
+    overflow: hidden !important;
+  }
+  
+  /* Controles fixos no rodapé, com botão maior */
+  .page-controls {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    display: flex !important;
+    justify-content: space-around !important;
+    background: rgba(255,255,240,0.9) !important;
+    font-size: 1rem !important;
+  }
+  .page-controls button {
+    animation: none !important;
+  }
+  .page-controls button p {
+    font-size: 1rem !important; /* maior que 1.25 */
+  }
+
+}
+  
+  
