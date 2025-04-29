@@ -1,7 +1,7 @@
 :root {
   --reader-font-size: 1.1rem;
   --page-padding: 1.5rem;
-  --parchment: url("assets/images/parchment.jpg");
+  --parchment: url("../assets/images/parchment.jpg");
   --font-title: "IM Fell English SC", serif;
   --font-text: "EB Garamond", serif;
   --bg-surround: #333;
@@ -27,6 +27,12 @@ body {
 
 .reader {
   width: var(--page-width);
+  perspective: 1200px;
+}
+
+.content {
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
 }
   
 .page {
@@ -46,7 +52,7 @@ body {
 .page:not(.cover) .page-content {
   padding: var(--page-padding);
   border: 120px solid transparent;
-  border-image-source: url("assets/images/ornate-border.png");
+  border-image-source: url("../assets/images/ornate-border.png");
   border-image-slice: 256 fill;
   border-image-width: 120px;
   border-image-repeat: round;
@@ -118,6 +124,46 @@ body {
   0%, 100% { transform: translateY(0); }
   50%      { transform: translateX(6px); }
 }
+
+@keyframes page-turn-next {
+  0% {
+    transform: rotateY(0deg);
+  }
+  40% {
+    transform: rotateY(-90deg);
+  }
+  50% {
+    /* no meio da animação, deslocamos verticalmente o texto */
+    transform: rotateY(-90deg) translateY(-VAR_PAGEHEIGHT);
+  }
+  100% {
+    transform: rotateY(-180deg) translateY(-VAR_PAGEHEIGHT);
+  }
+}
+
+@keyframes page-turn-prev {
+  0% {
+    transform: rotateY(-180deg) translateY(-VAR_PAGEHEIGHT);
+  }
+  50% {
+    transform: rotateY(-90deg) translateY(-VAR_PAGEHEIGHT);
+  }
+  60% {
+    transform: rotateY(-90deg);
+  }
+  100% {
+    transform: rotateY(0deg);
+  }
+}
+
+/* .turn-next e .turn-prev são classes temporárias: */
+.content.turn-next {
+  animation: page-turn-next 0.8s ease forwards;
+}
+.content.turn-prev {
+  animation: page-turn-prev 0.8s ease forwards;
+}
+
   
 /* Drop-cap medieval */
 .page-content p:first-of-type::first-letter {
@@ -132,7 +178,7 @@ body {
   padding: 0.15em;
   border: 3px solid #2b1a02;
   box-shadow: 0 0 4px rgba(0,0,0,.25);
-  background: url("assets/images/vines.png") center/110% repeat;
+  background: url("../assets/images/vines.png") center/110% repeat;
   color: #fff;
   -webkit-text-stroke: 3px #2b1a02;
   text-shadow:
@@ -201,7 +247,7 @@ body {
   width: var(--page-width);
   height: 100vh;
 
-  background-image: url("assets/images/cover/leather-background.png");
+  background-image: url("../assets/images/cover/leather-background.png");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -209,7 +255,7 @@ body {
   background-clip: border-box;
 
   border: 100px solid transparent;
-  border-image-source: url("assets/images/cover/cover-border.png");
+  border-image-source: url("../assets/images/cover/cover-border.png");
   border-image-slice: 180 fill;
   border-image-width: 100px;
   border-image-repeat: no-repeat;
@@ -276,7 +322,7 @@ section.page.back {
   box-sizing: border-box;
   width: var(--page-width);
   height: 100vh;
-  background-image: url("assets/images/cover/leather-background.png");
+  background-image: url("../assets/images/cover/leather-background.png");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -285,7 +331,7 @@ section.page.back {
 
   /* mesma moldura */
   border: 100px solid transparent;
-  border-image-source: url("assets/images/cover/cover-border.png");
+  border-image-source: url("../assets/images/cover/cover-border.png");
   border-image-slice: 180 fill;
   border-image-width: 100px;
   border-image-repeat: no-repeat;
@@ -360,7 +406,7 @@ section.page.cover.back .page-controls button#prevBtn p {
     height: 100vh !important;
 
     /* mantém o background da capa */
-    background-image: url("assets/images/cover/leather-background.png") !important;
+    background-image: url("../assets/images/cover/leather-background.png") !important;
     background-size: cover !important;
     background-position: center !important;
     background-repeat: no-repeat !important;
@@ -369,7 +415,7 @@ section.page.cover.back .page-controls button#prevBtn p {
 
     /* reduz a moldura, mas não remove */
     border: 80px solid transparent !important;
-    border-image-source: url("assets/images/cover/cover-border.png") !important;
+    border-image-source: url("../assets/images/cover/cover-border.png") !important;
     border-image-slice: 180 fill !important;
     border-image-width: 50px !important;
     border-image-repeat: no-repeat !important;
@@ -403,7 +449,7 @@ section.page.cover.back .page-controls button#prevBtn p {
     padding: 0.25rem !important;
     margin: 0 !important;
     border: 25px solid transparent !important;
-    border-image-source: url("assets/images/ornate-border.png") !important;
+    border-image-source: url("../assets/images/ornate-border.png") !important;
     border-image-slice: 256 fill !important;
     border-image-width: 25px !important;
     border-image-repeat: round !important;
@@ -431,4 +477,50 @@ section.page.cover.back .page-controls button#prevBtn p {
 
 }
   
-  
+/* ── Anula a borda interna das páginas injetadas em #book ── */
+#book > section.page .page-content {
+  border: none !important;
+  padding: 0 !important;
+}
+
+#book {
+  position: relative;
+  overflow: hidden;
+}
+
+#book .page {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* garante que só uma apareça por vez */
+  transform: translateX(100%);
+  transition: transform 0.5s ease;
+}
+
+/* 2) Página ativa */
+#book .page.active {
+  transform: translateX(0);
+  z-index: 2;
+}
+
+/* 3) Página que acabou de sair */
+#book .page.prev {
+  transform: translateX(-100%);
+  z-index: 1;
+}
+
+#book .content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  transition: transform 0.3s ease;
+}
+
+/* Fade-out / fade-in da troca de página */
+#book .content {
+  transition: opacity 0.4s ease;
+  opacity: 1;
+}
