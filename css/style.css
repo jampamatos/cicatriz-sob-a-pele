@@ -524,3 +524,66 @@ section.page.cover.back .page-controls button#prevBtn p {
   transition: opacity 0.4s ease;
   opacity: 1;
 }
+
+/* ── Overrides finais para a Folha de Rosto ─────────────────────────────────── */
+
+/* 1) Remove TODA a moldura ornamental e garante largura total e padding horizontal */
+section.page.title-page .page-content {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  height: 100% !important;
+  border: none !important;
+  border-image: none !important;
+  padding: 0 var(--page-padding) !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* 2) Remove completamente o drop-cap (pseudo-elemento) */
+section.page.title-page .page-content p::first-letter {
+  all: unset !important;
+}
+
+/* 3) Centraliza o texto, a autorização e o selo */
+section.page.title-page .page-content {
+  text-align: center !important;
+}
+section.page.title-page .print-authorization {
+  margin: 1rem auto !important;
+}
+section.page.title-page .seal {
+  display: block !important;
+  margin: 1rem auto 0 !important;
+  text-align: center !important;
+}
+
+/* 4) Botões ← e → menores, escondendo A- e A+ */
+section.page.title-page .page-controls {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center;
+  padding: 0 2rem !important;
+  position: absolute !important;
+  bottom: var(--page-padding) !important;
+  width: 100% !important;
+}
+section.page.title-page .page-controls button#fontDecBtn,
+section.page.title-page .page-controls button#fontIncBtn {
+  display: none !important;
+}
+section.page.title-page .page-controls button#prevBtn p,
+section.page.title-page .page-controls button#nextBtn p {
+  font-size: 1.25rem !important;  /* mesmo tamanho dos botões do livro */
+}
+
+/* ── Selo responsivo na Folha de Rosto ─────────────────────────────────────── */
+section.page.title-page .seal img {
+  /* largura mínima de 80px, ideal 15% da viewport, máxima de 120px */
+  width: clamp(80px, 15vw, 120px);
+  height: auto;
+  display: block;     /* garante que margin auto funcione */
+  margin: 0 auto;     /* centraliza perfeitamente */
+}
+
